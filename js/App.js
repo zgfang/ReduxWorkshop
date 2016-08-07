@@ -1,3 +1,7 @@
+/*
+* @flow
+*/
+
 import React, {Component} from 'react'
 import {
   AppRegistry,
@@ -12,14 +16,18 @@ type Todo = {
   completed: boolean,
 }
 
+type Action = 
+    { type: 'TOGGLE_TODO', id: number }|
+    { type: 'ADD_TODO', name: string } 
+
 const defaultTodos: Array<Todo> = []
 
-const addTodoAction = {
+const addTodoAction: Action = {
   type: 'ADD_TODO',
   name: '记得买牛奶'
 }
 
-function addTodoReducer(todos: Array<Todo>, action): Array<Todo> {
+function addTodoReducer(todos: Array<Todo>, action: Action): Array<Todo> {
   if (action.type === 'ADD_TODO') {
     return [...todos, {
       id: todos.length,
@@ -30,15 +38,16 @@ function addTodoReducer(todos: Array<Todo>, action): Array<Todo> {
   return todos;
 }
 
-const toggleTodoAction = {
+const toggleTodoAction: Action = {
   type: 'TOGGLE_TODO',
   id: 0,
 }
 
-function toggleTodoReducer(todos, action) {
+function toggleTodoReducer(todos: Array<Todo>, action: Action): Array<Todo> {
   if (action.type === 'TOGGLE_TODO') {
+    const actionId = action.id
     return todos.map(todo=>{
-      if (todo.id === action.id) {
+      if (todo.id === actionId) {
         return {
           ...todo,
           completed: !todo.completed
